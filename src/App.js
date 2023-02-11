@@ -1,11 +1,28 @@
-import logo from './logo.svg';
+
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,  //Switch replaced by Routes in the newer version.
+  Route
+} from "react-router-dom";
+import Navbar from './Components/Navbar';
+import Home from './Components/Home';
+import About from './Components/About';
+import NoteState from './context/notes/NoteState';
 
 function App() {
   return (
-    <div className="App">
-     <h1> Hell MOFO</h1>
-    </div>
+    <>
+    <NoteState>
+    <Router>
+    <Navbar/>
+    <Routes>
+    <Route exact path="/about" element={<About/>} />
+    <Route  exact path="/home"  element={ <Home/>} />
+    </Routes>
+    </Router>
+    </NoteState>
+    </>
   );
 }
 
