@@ -1,5 +1,5 @@
-import React,{useEffect,useContext } from 'react'
-import NoteContext from '../context/notes/NoteContext'
+// import React,{useEffect,useContext } from 'react'
+// import NoteContext from '../context/notes/NoteContext'
 
 const About = () => {
  
