@@ -58,7 +58,7 @@ const deleteNote=async(id)=>{
      
     }
   });
-  const newNote=notes.filter((note)=>{ return note._id!=id})
+  const newNote=notes.filter((note)=>{ return note._id!==id})
   setNotes(newNote);
   
 }
