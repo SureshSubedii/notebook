@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
-const mongoURI='mongodb+srv://Suresh_11:sx8QPFwYoNEX5BSg@cluster0.ivodyjl.mongodb.net/notebook';
+const env=require('dotenv').config();
+const mongoURI=process.env.REACT_APP_URL;
 const connectToMongo=()=>{
     mongoose.connect(mongoURI,()=>{
         console.log(' Sucessfully Connected to mongo')
