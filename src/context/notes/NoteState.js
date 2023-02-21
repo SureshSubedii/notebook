@@ -66,7 +66,7 @@ const deleteNote=async(id)=>{
 const editNote= async (id,title,description,tag)=>{
   //API CALL
   const response = await fetch(`${host}/api/notes/updatenotes/${id}`, {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNkZmNmNGYxOTlmODU0YTcyNWEwODBkIn0sImlhdCI6MTY3NTY4MzAxM30.1QGbAH4oms8whKORz43cD3u4ZVmhrzNmfh2eprIsWUI'
@@ -74,18 +74,20 @@ const editNote= async (id,title,description,tag)=>{
     },
     body: JSON.stringify({title,description,tag}) // body data type must match "Content-Type" header
   });
-  const Json= response.json();
+  // const Json= response.json();
 
+  let newNotes=JSON.parse(JSON.stringify(notes));
   //LOGIC TO EDIT NOTES
   for (let index = 0; index < notes.length; index++) {
-    const element = notes[index];
-    element.title=title;
-    element.description=description;
-    element.tag=tag;
-
-    
+    const element = newNotes[index];
+    if(element._id===id){
+      newNotes[index].title=title;
+      newNotes[index].description=description;
+      newNotes[index].tag=tag;
+      break;
+    } 
   }
-  
+  setNotes(newNotes);
 }
 
   return (
