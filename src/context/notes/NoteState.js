@@ -2,52 +2,36 @@ import NoteContext from "./NoteContext";
 import { useState } from "react";
 
 const NoteState = (props) => {
-  const notesIni = [
-    {
-      _id: "63dfd142d3efd04ff178776e",
-      user: "63de5a04988791752672d6a2",
-      title: "Myfff",
-      description: "HEllo from the other side.",
-      tag: "How you doing Rat people?",
-      date: "2023-02-05T15:54:42.087Z",
-      __v: 0,
-    },
-    {
-      _id: "63e2629687e41ebbfb874944",
-      user: "63dfcf4f199f854a725a080d",
-      title: "ff ",
-      description:
-        "Browser default checkboxes and radios are replaced with the help of .form-check, a series of classes for both input types that improves the layout and behavior of their HTML elements, that provide greater customization and cross browser consistency. Checkboxes are for selecting one or several options in a list, while radios are for selecting one option from many.",
-      tag: "tag you?",
-      date: "2023-02-07T14:39:18.737Z",
-      __v: 0,
-    },
-    {
-      _id: "63e2629687e41ebbfb8174944",
-      user: "63dfcf4f199f854a725a080d",
-      title: "fuffff ",
-      description:
-        "Browser default checkboxes and radios are replaced with the help of .form-check, a series of classes for both input types that improves the layout and behavior of their HTML elements, that provide greater customization and cross browser consistency. Checkboxes are for selecting one or several options in a list, while radios are for selecting one option from many.",
-      tag: "tag you?",
-      date: "2023-02-07T14:39:18.737Z",
-      __v: 0,
-    }, {
-      _id: "63e2629687e41ebbf0b874944",
-      user: "63dfcf4f199f854a725a080d",
-      title: "ff ",
-      description:
-        "Browser default checkboxes and radios are replaced with the help of .form-check, a series of classes for both input types that improves the layout and behavior of their HTML elements, that provide greater customization and cross browser consistency. Checkboxes are for selecting one or several options in a list, while radios are for selecting one option from many.",
-      tag: "tag you?",
-      date: "2023-02-07T14:39:18.737Z",
-      __v: 0,
-    }
-  ];
+  const host="http://localhost:5000"
+  const notesIni =[]
 
   const [notes, setNotes] = useState(notesIni);
-
-  //Add note
-const addNote=(title,description,tag)=>{
+//Get notes
+const getNotes=async()=>{
   //Todo:Call Api
+  const response = await fetch(`${host}/api/notes/fetchAllNotes`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNkZmNmNGYxOTlmODU0YTcyNWEwODBkIn0sImlhdCI6MTY3NTY4MzAxM30.1QGbAH4oms8whKORz43cD3u4ZVmhrzNmfh2eprIsWUI'
+     
+    },
+  });
+  const Json= await response.json();
+setNotes(Json)}
+  //Add note
+const addNote=async(title,description,tag)=>{
+  //Todo:Call Api
+  const response = await fetch(`${host}/api/notes/addNewNotes`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNkZmNmNGYxOTlmODU0YTcyNWEwODBkIn0sImlhdCI6MTY3NTY4MzAxM30.1QGbAH4oms8whKORz43cD3u4ZVmhrzNmfh2eprIsWUI'
+     
+    },
+    body: JSON.stringify({title,description,tag}) // body data type must match "Content-Type" header
+  });
+
   const note={
     _id: "63e2629687e41ebbf0b874944",
     user: "63dfcf4f199f854a725a080d",
@@ -67,13 +51,35 @@ const deleteNote=(id)=>{
   
 }
 //Edit note
-const editNote=()=>{
+const editNote= async (id,title,description,tag)=>{
+  //API CALL
+  const response = await fetch(`${host}/api/notes/updatenotes/${id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'auth-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNkZmNmNGYxOTlmODU0YTcyNWEwODBkIn0sImlhdCI6MTY3NTY4MzAxM30.1QGbAH4oms8whKORz43cD3u4ZVmhrzNmfh2eprIsWUI'
+     
+    },
+    body: JSON.stringify({title,description,tag}) // body data type must match "Content-Type" header
+  });
+  const Json= response.json();
+
+  //LOGIC TO EDIT NOTES
+  for (let index = 0; index < notes.length; index++) {
+    const element = notes[index];
+    element.title=title;
+    element.description=description;
+    element.tag=tag;
+
+    
+  }
   
 }
+
   return (
-    <NoteContext.Provider value={{ notes, addNote,deleteNote,editNote }}>
+    <NoteContext.Provider value={{ notes, addNote,deleteNote,editNote,getNotes}}>
       {props.children}
     </NoteContext.Provider>
   );
-};
+}
 export default NoteState;
