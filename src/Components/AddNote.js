@@ -8,9 +8,14 @@ const AddNote = (props) => {
   const [note, setnote] = useState({title:"",description:"",tag:"Default"})
   const handleClick=(e)=>{
     e.preventDefault();
+    if((note.title===""||note.description==="")){
+      props.showAlert("Fill all the boxes to add notes","danger")
+    }
+    else{
+    
      addNote(note.title,note.description,note.tag);
      props.showAlert("Added sucessfully","success")
-  }
+  }}
 
   const handleChange=(e)=>{
     setnote({...note,[e.target.name]:e.target.value})
@@ -18,6 +23,7 @@ const AddNote = (props) => {
   return (
   
       <div className="container ">
+        <h1>Enter your notes below.</h1>
       <form>
   <div className="mb-3">
     <label htmlFor="title" className="form-label">Title</label>

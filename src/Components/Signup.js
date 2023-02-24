@@ -10,7 +10,12 @@ const Signup = (props) => {
       setcredentials({...credentials,[e.target.name]:e.target.value})
     }
   const handleSubmit= async (e)=>{
-      e.preventDefault()
+    e.preventDefault()
+    if(e.target.password.value!==e.target.cpassword.value){
+      props.showAlert("Both Passwords must match","danger");
+      
+    }
+    else{
       const url='http://localhost:5000/api/auth/createuser'
       const response = await fetch(url, {
           method: 'POST',
@@ -31,6 +36,7 @@ const Signup = (props) => {
             else{
               props.showAlert("Invalid Credentials","danger");
             }
+          }
 
         
       

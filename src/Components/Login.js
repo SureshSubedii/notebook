@@ -38,7 +38,7 @@ const Login = (props) => {
   return (
     <form onSubmit={handleSubmit}>
     <div className="mb-3">
-      <h1>Login to continue.</h1>
+      <h1>Login to continue. SignUp if you are new.</h1>
       <label htmlFor="email" className="form-label">Email address</label>
       <input type="email" className="form-control" onChange={handleChange}  value={credentials.email} id="email" name="email" aria-describedby="emailHelp"/>
       <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>

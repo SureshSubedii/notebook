@@ -6,7 +6,14 @@ const Navbar = () => {
   const navigate=useNavigate();
   const handleLogout=()=>{
     localStorage.removeItem('token');
-    navigate("/login")
+    navigate("/")
+  }
+  if(location.pathname==="/"){
+    document.body.style.backgroundColor='black'
+  }
+  else{
+    document.body.style.backgroundColor='white'
+
   }
 
   // useEffect(() => {
@@ -26,6 +33,9 @@ const Navbar = () => {
         </li>
         <li className="nav-item">
           <Link className={`nav-link ${location.pathname==="/about"?"active":""}`} to="/about">About</Link>
+        </li>
+        <li className="nav-item">
+          <Link className={`nav-link d-none`} to="/">Front</Link>
         </li>
        
       </ul>
