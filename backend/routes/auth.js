@@ -10,7 +10,7 @@ const fetchUser = require('./middleware/fetchUser');
 router.post('/createuser',[
     body('email','Enter a valid Email.').isEmail(), //Check if the email is valid.
     body('password','Password must be minimun 5 characters long.').isLength({ min: 5 }),//Specify the minimun length of the password.
-    body('name','Name must be minimun 3 characters long.').isLength({ min: 3 }),
+    body('name','Name must be minimun 3 characters long.').isLength({ min: 5 }),
 
 ],async (req,res)=>{
   //If there are errors, return bad requests and results
