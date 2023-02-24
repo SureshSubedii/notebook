@@ -1,7 +1,8 @@
 import React,{useState} from 'react'
 import {useNavigate} from 'react-router-dom' //useHistory replaced by useNavigate
 
-const Login = () => {
+
+const Login = (props) => {
     const [credentials, setcredentials] = useState({email:"",password:""})
     let navigate=useNavigate()
     const handleChange=(e)=>{
@@ -24,11 +25,12 @@ const Login = () => {
           if(json.success){
             //save the auth token and redirect
             localStorage.setItem('token',json.AuthToken);
-            navigate("/");
+            navigate("/home");
+            props.showAlert("LogIn successful","success");
 
           }
           else{
-            alert("Invalid credentials");
+            props.showAlert("Invalid Credentials","danger");
           }
         
 
@@ -36,6 +38,7 @@ const Login = () => {
   return (
     <form onSubmit={handleSubmit}>
     <div className="mb-3">
+      <h1>Login to continue.</h1>
       <label htmlFor="email" className="form-label">Email address</label>
       <input type="email" className="form-control" onChange={handleChange}  value={credentials.email} id="email" name="email" aria-describedby="emailHelp"/>
       <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
@@ -44,7 +47,7 @@ const Login = () => {
       <label htmlFor="password" className="form-label">Password</label>
       <input type="password" className="form-control"  onChange={handleChange} value={credentials.password}  id="password" name="password"/>
     </div>
-    <button type="submit" className="btn btn-primary" >Submit</button>
+    <button type="submit" className="btn btn-primary" >Log In</button>
   </form>
   )
 }

@@ -5,12 +5,13 @@ const { body, validationResult } = require('express-validator');
 const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
 const fetchUser = require('./middleware/fetchUser');
+let success=false;
 
 //Route1: Create a new user
 router.post('/createuser',[
     body('email','Enter a valid Email.').isEmail(), //Check if the email is valid.
     body('password','Password must be minimun 5 characters long.').isLength({ min: 5 }),//Specify the minimun length of the password.
-    body('name','Name must be minimun 3 characters long.').isLength({ min: 5 }),
+    body('name','Name must be minimun 3 characters long.').isLength({ min: 3 }),
 
 ],async (req,res)=>{
   //If there are errors, return bad requests and results
@@ -22,7 +23,7 @@ router.post('/createuser',[
     try{
     let user=await User.findOne({email:req.body.email})
     if(user){
-      return res.status(400).json({ error: "Sorry a user already exists with this email."});
+      return res.status(400).json({ success,error: "Sorry a user already exists with this email."});
 
     }
     const salt= await bcrypt.genSalt(10);
@@ -35,6 +36,7 @@ router.post('/createuser',[
         email: req.body.email,
         gender: req.body.gender
       })
+      success=true;
  
     const data={
       user:{
@@ -43,12 +45,13 @@ router.post('/createuser',[
 
     }
     const authToken=jwt.sign(data,"Hello Mf")
-    res.json({AuthToken:authToken});
+    res.json({success,AuthToken:authToken});
     }
     catch(error){
       console.error(error.message);
       res.status(500).send("Internal Server Error Occurred.")
     }})
+    
     //Route 2:Authenticate the user, No login required.
     router.post('/login',[
       body('email','Enter a valid Email.').isEmail(),
@@ -58,7 +61,8 @@ router.post('/createuser',[
       let success=false;
       const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      let success=false;
+      success=false;
+      
       return res.status(400).json({success,errors: errors.array() });}
      
       const {email,password}=req.body;

@@ -2,35 +2,46 @@ import React from 'react'
 import { useContext,useEffect,useRef,useState } from "react";
 import Notecontext from  '../context/notes/NoteContext';
 import NoteItem from './NoteItem'
-import AddNote from "./AddNote";;
-export default function Notes() {
+import AddNote from "./AddNote";
+import { useNavigate } from 'react-router-dom';
+export default function Notes(props) {
     const context=useContext(Notecontext);
   const {notes,getNotes,editNote}= context;
   const [note, setnote] = useState({id:"",etitle:"",edescription:"",etag:""})
+  const navigate=useNavigate();
   const ref = useRef(null);
   const refClose = useRef(null);
 
   const handleClick=(e)=>{
     editNote(note.id,note.etitle,note.edescription,note.etag)
     refClose.current.click();
+    props.showAlert("Updated sucessfully","success")
   }
 
   const handleChange=(e)=>{
     setnote({...note,[e.target.name]:e.target.value})
+    
   }
   useEffect(() => {
-  getNotes();
+    if(localStorage.getItem('token')){
+      getNotes();
+    }
+    else{
+      navigate("/login")
+    }
+  
   // eslint-disable-next-line 
   }, [])
  
   const updateNote=(currentNote)=>{
     ref.current.click();
-    setnote({id:currentNote._id,etitle:currentNote.title,edescription:currentNote.description,etag:currentNote.tag})
+    setnote({id:currentNote._id,etitle:currentNote.title,edescription:currentNote.description,etag:currentNote.tag});
+
     
   }
   return (
     <>
-    <AddNote/>
+    <AddNote showAlert={props.showAlert}/>
     
 <button type="button" ref={ref} className="btn btn-primary d-none my-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
   Launch demo modal
@@ -70,7 +81,7 @@ export default function Notes() {
     <div className="row my-1">
         <h2> Your Notes</h2>
       {notes.map((note)=>{
-        return <NoteItem key ={note._id} updateNote={updateNote} note={note}/>
+        return <NoteItem key ={note._id} updateNote={updateNote} showAlert={props.showAlert} note={note}/>
       })}
         </div>
         </>
