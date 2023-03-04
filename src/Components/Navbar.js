@@ -22,7 +22,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg  navbar-info bg-info">
   <div className="container-fluid">
-    <Link className="navbar-brand" to="/home" style={{fontFamily:'cursive'}}>CNotes!</Link>
+    <Link className="navbar-brand" to="/" style={{fontFamily:'cursive'}}>CNotes!</Link>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
     </button>
