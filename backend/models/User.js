@@ -23,4 +23,4 @@ const UserSchema=new Schema({
         required:true
     }
 })
-module.exports=mongoose.model('user',UserSchema)
+module.exports=mongoose.model('user',UserSchema) //Here, user is the collection name in the database
